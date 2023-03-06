@@ -1,10 +1,8 @@
 {
   inputs.nixpkgs.url = "nixpkgs/nixos-22.05";
-  inputs.flake-utils.url = "github:numtide/flake-utils";
-  inputs.flake-utils.inputs.nixpkgs.follows = "nixpkgs";
 
   outputs = { self, nixpkgs, flake-utils }:
-    flake-utils.lib.eachSystem [ "x86_64-linux" "aarch64-linux" ] (system:
+    flake-utils.lib.eachDefaultSystem (system:
       let pkgs = import nixpkgs { inherit system; };
       in {
         packages.default = pkgs.stdenv.mkDerivation {
@@ -20,5 +18,10 @@
             }
           '';
         };
-      });
+      }) // {
+        homeManagerModule.default = { config, pkgs, ... }: {
+          wayland.windowManager.sway.config.keybindings."Mod4+o" =
+            "exec ${self.packages.x86_64-linux.default}/bin/shmoji rofi-wayland";
+        };
+      };
 }

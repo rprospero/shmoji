@@ -21,7 +21,7 @@
       }) // {
         homeManagerModule.default = { config, pkgs, ... }: {
           wayland.windowManager.sway.config.keybindings."Mod4+o" =
-            "exec ${self.packages.x86_64-linux.default}/bin/shmoji rofi-wayland";
+            "exec ${self.packages.x86_64-linux.default}/bin/shmoji fuzzel";
         };
       };
 }
